@@ -13,6 +13,7 @@ app.post('/register', function(req, res) {
     if(user || errFind) {
       console.log('- User already exists');
       res.status(403);
+      res.json({});
     } else {
       var newUser = new User({
         name: req.body.name,
@@ -45,13 +46,16 @@ app.post('/login', function(req, res) {
       if(req.body.pass === user.pass) {
         console.log('- User authenticated');
         res.status(200);
+        res.json({});
       } else {
         console.log('- Incorrect password');
         res.status(403);
+        res.json({});
       }
     } else {
       console.log('- User does not exist');
       res.status(403);
+        res.json({});
     }
   });
 });
@@ -66,6 +70,7 @@ app.get('/user/:name', function(req, res) {
     } else {
       console.log('- User does not exist');
       res.status(403);
+        res.json({});
     }
   });
 });
@@ -77,6 +82,7 @@ app.get('/report', function(req, res) {
       console.log('- Error finding reports');
       console.log(err);
       res.status(403);
+        res.json({});
     } else {
       console.log('- Reports found');
       res.status(200);
@@ -99,13 +105,15 @@ app.post('/report/new', function(req, res) {
       console.log('- Error saving report');
       console.log(err);
       res.status(403);
+        res.json({});
     } else {
       console.log('- Report was added');
       res.status(201);
+        res.json({});
     }
   });
 });
 
 app.listen(process.env.PORT || 3000, function () {
-  console.log('Server listening on port 3000');
+  console.log('Server listening on port ' + (process.env.PORT || 3000));
 });
