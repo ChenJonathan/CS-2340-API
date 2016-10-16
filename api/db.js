@@ -40,4 +40,4 @@ process.on('SIGTERM', function() {
 });
 
 require('./user');
-require('./user_report');
+require('./report');

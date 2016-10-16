@@ -3,7 +3,7 @@ var bodyParser = require('body-parser')
 
 require('./api/db');
 var User = require('./api/user');
-var UserReport = require('./api/user_report');
+var Report = require('./api/report');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -70,7 +70,7 @@ app.get('/user/:name', function(req, res) {
   });
 });
 
-app.get('/user_report', function(req, res) {
+app.get('/report', function(req, res) {
   console.log('Finding all reports');
   Report.find({}, function(err, reports) {
     if(err) {
@@ -84,15 +84,14 @@ app.get('/user_report', function(req, res) {
   });
 });
 
-app.post('/user_report/new', function(req, res) {
+app.post('/report/new', function(req, res) {
   console.log('Submitting a new report');
-  var newReport = new UserReport({
+  var newReport = new Report({
+    type: req.body.type,
     location: req.body.location,
     description: req.body.description,
     timestamp: req.body.timestamp,
     user: req.body.user,
-    type: req.body.type,
-    condition: req.body.condition
   });
   newReport.save(function(err) {
     if(err) {
