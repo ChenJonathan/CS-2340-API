@@ -95,6 +95,7 @@ app.post('/report/new', function(req, res) {
   console.log('Submitting a new report');
   var newReport = new Report({
     type: req.body.type,
+    number: req.body.number,
     location: req.body.location,
     description: req.body.description,
     timestamp: req.body.timestamp,
