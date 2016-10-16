@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var reportSchema = new mongoose.Schema({
-  type : {type : String, required : true}
+  type : {type : String, required : true},
   location : {type : String, required : true},
   description : {type : String, required : true},
   timestamp : {type : String, required : true},
