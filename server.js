@@ -5,7 +5,6 @@ require('./api/db');
 var User = require('./api/user');
 var Report = require('./api/report');
 
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/register', function(req, res) {
@@ -26,6 +25,7 @@ app.post('/register', function(req, res) {
       newUser.save(function(errSave) {
         if(errSave) {
           console.log('- Error saving user');
+          console.log(errSave);
           res.status(403);
           res.json({});
         } else {
@@ -75,6 +75,7 @@ app.get('/report', function(req, res) {
   Report.find({}, function(err, reports) {
     if(err) {
       console.log('- Error finding reports');
+      console.log(err);
       res.status(403);
     } else {
       console.log('- Reports found');
@@ -96,6 +97,7 @@ app.post('/report/new', function(req, res) {
   newReport.save(function(err) {
     if(err) {
       console.log('- Error saving report');
+      console.log(err);
       res.status(403);
     } else {
       console.log('- Report was added');
