@@ -46,7 +46,7 @@ app.post('/login', function(req, res) {
       if(req.body.pass === user.pass) {
         console.log('- User authenticated');
         res.status(200);
-        res.json({});
+        res.json(user);
       } else {
         console.log('- Incorrect password');
         res.status(403);
@@ -99,6 +99,10 @@ app.post('/report/new', function(req, res) {
     description: req.body.description,
     timestamp: req.body.timestamp,
     user: req.body.user,
+    waterType: req.body.waterType,
+    waterCondition: req.body.waterCondition,
+    virusPPM: req.body.virusPPM,
+    contaminantPPM: req.body.contaminantPPM
   });
   newReport.save(function(err) {
     if(err) {
