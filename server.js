@@ -55,7 +55,7 @@ app.post('/login', function(req, res) {
     } else {
       console.log('- User does not exist');
       res.status(403);
-        res.json({});
+      res.json({});
     }
   });
 });
@@ -70,7 +70,7 @@ app.get('/user/:name', function(req, res) {
     } else {
       console.log('- User does not exist');
       res.status(403);
-        res.json({});
+      res.json({});
     }
   });
 });
@@ -82,7 +82,7 @@ app.get('/report', function(req, res) {
       console.log('- Error finding reports');
       console.log(err);
       res.status(403);
-        res.json({});
+      res.json({});
     } else {
       console.log('- Reports found');
       res.status(200);
@@ -95,7 +95,6 @@ app.post('/report/new', function(req, res) {
   console.log('Submitting a new report');
   var newReport = new Report({
     type: req.body.type,
-    number: req.body.number,
     location: req.body.location,
     description: req.body.description,
     timestamp: req.body.timestamp,
@@ -105,16 +104,27 @@ app.post('/report/new', function(req, res) {
     virusPPM: req.body.virusPPM,
     contaminantPPM: req.body.contaminantPPM
   });
-  newReport.save(function(err) {
+  Report.find({}, function(err, reports) {
     if(err) {
-      console.log('- Error saving report');
+      console.log('- Error finding reports');
       console.log(err);
       res.status(403);
-        res.json({});
+      res.json({});
     } else {
-      console.log('- Report was added');
-      res.status(201);
-        res.json({});
+      console.log('- Reports found');
+      newReport.number = reports.length + 1;
+      newReport.save(function(err) {
+        if(err) {
+          console.log('- Error saving report');
+          console.log(err);
+          res.status(403);
+          res.json({});
+        } else {
+          console.log('- Report was added');
+          res.status(201);
+          res.json({});
+        }
+      });
     }
   });
 });
