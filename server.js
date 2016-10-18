@@ -75,6 +75,38 @@ app.get('/user/:name', function(req, res) {
   });
 });
 
+app.put('/user/:name', function(req, res) {
+  console.log('Updating a user');
+  User.findOne({name: req.params.name}, function(errFind, user) {
+    if(user) {
+      console.log('- User found');
+      user.name = req.body.name;
+      user.pass = req.body.pass,
+      user.auth = req.body.auth,
+      user.email = req.body.email,
+      user.phone = req.body.phone,
+      user.address = req.body.address
+      user.save(function(errSave) {
+        if(errSave) {
+          console.log('- Error saving user');
+          console.log(errSave);
+          res.status(403);
+          res.json({});
+        } else {
+          console.log('- User was updated');
+          res.status(201);
+          res.json({});
+        }
+      });
+    } else {
+      console.log('- User does not exist');
+      console.log(errFind);
+      res.status(403);
+      res.json({});
+    }
+  });
+});
+
 app.get('/report', function(req, res) {
   console.log('Finding all reports');
   Report.find({}, function(err, reports) {
