@@ -95,7 +95,11 @@ app.post('/report/new', function(req, res) {
   console.log('Submitting a new report');
   var newReport = new Report({
     type: req.body.type,
-    location: req.body.location,
+    location: {
+      name: req.body.locationName,
+      latitude: req.body.locationLatitude,
+      longitude: req.body.locationLongitude,
+    },
     description: req.body.description,
     timestamp: req.body.timestamp,
     user: req.body.user,
