@@ -125,13 +125,10 @@ app.get('/report', function(req, res) {
 
 app.get('/report/:longitude/:latitude/:radius', function(req, res) {
   console.log('Finding all reports within a specific location');
-  Report.find({
-    location: {
-      coordinates: {
-        $nearSphere: [req.params.longitude, req.params.latitude],
-        $maxDistance: req.params.radius / 2959 // Radius of Earth in miles
-      }
-    }
+  Report.find({}).where('location.coordinates').near({
+    center: [req.params.longitude, req.params.latitude],
+    maxDistance: req.params.radius,
+    spherical: true
   }).exec(function(err, reports) {
     if(err) {
       console.log('- Error finding reports by location');
@@ -139,6 +136,7 @@ app.get('/report/:longitude/:latitude/:radius', function(req, res) {
       res.status(403);
       res.json({});
     } else {
+      console.log('- Reports found');
       res.status(200);
       res.json(reports);
     }
