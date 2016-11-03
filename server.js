@@ -123,14 +123,35 @@ app.get('/report', function(req, res) {
   });
 });
 
+app.get('/report/:longitude/:latitude/:radius', function(req, res) {
+  console.log('Finding all reports within a specific location');
+  Report.find({
+    location: {
+      coordinates: {
+        $nearSphere: [req.params.longitude, req.params.latitude],
+        $maxDistance: req.params.radius / 2959 // Radius of Earth in miles
+      }
+    }
+  }).exec(function(err, reports) {
+    if(err) {
+      console.log('- Error finding reports by location');
+      console.log(err);
+      res.status(403);
+      res.json({});
+    } else {
+      res.status(200);
+      res.json(reports);
+    }
+  });
+});
+
 app.post('/report/new', function(req, res) {
   console.log('Submitting a new report');
   var newReport = new Report({
     type: req.body.type,
     location: {
       name: req.body.locationName,
-      latitude: req.body.locationLatitude,
-      longitude: req.body.locationLongitude,
+      coordinates: [req.body.locationLatitude, req.body.locationLongitude]
     },
     description: req.body.description,
     timestamp: req.body.timestamp,

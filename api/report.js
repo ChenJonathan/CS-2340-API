@@ -5,8 +5,7 @@ var reportSchema = new mongoose.Schema({
   number : {type : Number, required : true},
   location : {
     name : {type : String, required : true},
-    latitude : {type : Number, required : true},
-    longitude : {type : Number, required : true},
+    coordinates : {type : [Number], index : '2dsphere', required : true},
   },
   description : {type : String, required : true},
   timestamp : {type : String, required : true},
