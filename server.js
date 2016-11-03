@@ -123,11 +123,11 @@ app.get('/report', function(req, res) {
   });
 });
 
-app.get('/report/:longitude/:latitude/:radius', function(req, res) {
+app.get('/report/location', function(req, res) {
   console.log('Finding all reports within a specific location');
   Report.find({}).where('location.coordinates').near({
-    center: [req.params.longitude, req.params.latitude],
-    maxDistance: req.params.radius,
+    center: [req.query.longitude, req.query.latitude],
+    maxDistance: req.query.radius / 3959, // Radius of the Earth in miles
     spherical: true
   }).exec(function(err, reports) {
     if(err) {
