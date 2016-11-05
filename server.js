@@ -149,7 +149,7 @@ app.post('/report/new', function(req, res) {
     type: req.body.type,
     location: {
       name: req.body.locationName,
-      coordinates: [req.body.locationLatitude, req.body.locationLongitude]
+      coordinates: [req.body.locationLongitude, req.body.locationLatitude]
     },
     description: req.body.description,
     timestamp: req.body.timestamp,
