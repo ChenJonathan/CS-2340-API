@@ -5,7 +5,8 @@ var reportSchema = new mongoose.Schema({
   number : {type : Number, required : true},
   location : {
     name : {type : String, required : true},
-    coordinates : {type : [Number], index : '2dsphere', required : true},
+    type : {type : String, required : true, default : 'Point'},
+    coordinates : {type : [Number], required : true}
   },
   description : {type : String, required : true},
   timestamp : {type : String, required : true},
@@ -15,5 +16,7 @@ var reportSchema = new mongoose.Schema({
   virusPPM : Number,
   contaminantPPM : Number
 });
+
+reportSchema.index({location : '2dsphere'});
 
 module.exports = mongoose.model('Report', reportSchema);

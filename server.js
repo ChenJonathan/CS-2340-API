@@ -125,11 +125,16 @@ app.get('/report', function(req, res) {
 
 app.get('/report/location', function(req, res) {
   console.log('Finding all reports within a specific location');
-  Report.find({}).where('location.coordinates').near({
-    center: [req.query.longitude, req.query.latitude],
-    maxDistance: req.query.radius / 3959, // Radius of the Earth in miles
-    spherical: true
-  }).exec(function(err, reports) {
+  Report.geoNear({
+    type: 'Point',
+    coordinates: [parseFloat(req.query.longitude),
+                  parseFloat(req.query.latitude)]
+  },
+  {
+    spherical: true,
+    maxDistance: parseFloat(req.query.radius) * 1609.34, // Miles to meters
+  },
+  function(err, reports, stats) {
     if(err) {
       console.log('- Error finding reports by location');
       console.log(err);
